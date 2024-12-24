@@ -1,14 +1,3 @@
 spring:
-  application:
-    name: crewsec-backend
-  datasource:
-    url: jdbc:mysql://localhost:3306/crewsec?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=False
-    username: root
-    password: Abde@2001
-
-storage:
-  location: /Users/blanzin/Desktop/bucket
-
-server:
-  port: 5000
-
+  profiles:
+    active: dev
