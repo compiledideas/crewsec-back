@@ -24,8 +24,12 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID,
-            generator = "table-identity-generator")
+    @GeneratedValue(strategy = GenerationType.TABLE,
+            generator = "table-generator")
+    @TableGenerator(name = "table-generator",
+            table = "sequence_id_generator",
+            initialValue = 1000,            pkColumnName = "seq_id",
+            valueColumnName = "seq_value")
     private Long id;
 
     private String firstname;

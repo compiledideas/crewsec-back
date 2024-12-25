@@ -12,3 +12,7 @@ storage:
 server:
   port: 5000
 
+
+token:
+  signing:
+    key: phdin9WOVV3EJZdJyVvxeXeG3ieE5IH/WlyQBGC7uGk=
