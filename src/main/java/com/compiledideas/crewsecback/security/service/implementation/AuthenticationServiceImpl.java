@@ -37,7 +37,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(request.getEmail())
                 .avatar(request.getAvatar())
                 .salt(salt)
-                .displayName(request.getDisplayName())
                 .phone(request.getPhone())
                 .roles(request.getRoles())
                 .password(passwordEncoder.encode(request.getPassword()))

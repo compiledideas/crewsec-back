@@ -36,7 +36,6 @@ public class User implements UserDetails {
     private String lastname;
     private String email;
     private String phone;
-    private String displayName;
     private String password;
     private String salt;
     private String avatar;
@@ -59,7 +58,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return phone;
+        return email;
     }
 
     @JsonIgnore

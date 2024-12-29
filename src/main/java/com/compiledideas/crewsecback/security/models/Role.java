@@ -31,8 +31,4 @@ public class Role {
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
-
-    public String getName() {
-        return name;
-    }
 }

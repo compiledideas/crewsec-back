@@ -30,7 +30,7 @@ public class BucketController {
         return ResponseHandler.generateResponse(
                 "Image uploaded to bucket successfully",
                 HttpStatus.OK,
-                Utils.getBaseUrl(request) + "/api/v1/storage/docs/download/" + link
+                Utils.getBaseUrl(request) + "/v1/storage/docs/download/" + link
         );
     }
 
@@ -42,7 +42,7 @@ public class BucketController {
         return ResponseHandler.generateResponse(
                 "document uploaded to bucket successfully",
                 HttpStatus.OK,
-                Utils.getBaseUrl(request) + "/api/v1/storage/images/download/" + link
+                Utils.getBaseUrl(request) + "/v1/storage/images/download/" + link
         );
     }
 
