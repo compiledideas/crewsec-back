@@ -1,6 +1,8 @@
 package com.compiledideas.crewsecback.security.models;
 
 
+import com.compiledideas.crewsecback.parking.models.Parking;
+import com.compiledideas.crewsecback.utils.enums.Role;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -9,6 +11,8 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,22 +42,17 @@ public class User implements UserDetails {
     private String phone;
     private String password;
     private String salt;
-    private String avatar;
     private String passwordReset;
 
+    @OneToMany(mappedBy = "user")
+    private List<Parking> parkings = new ArrayList<>();
+
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(
-                    name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private List<Role> roles;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(e -> new SimpleGrantedAuthority("ROLE_"  + e.getName())).collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.toString()));
     }
 
     @Override

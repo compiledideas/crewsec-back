@@ -37,7 +37,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody SignInRequest request) {
-        logger.info("user with phone {} trying to login.", request.getPhone());
+        logger.info("user with email:  {} trying to login.", request.getEmail());
 
         return ResponseHandler.generateResponse(
                 "login successfully",

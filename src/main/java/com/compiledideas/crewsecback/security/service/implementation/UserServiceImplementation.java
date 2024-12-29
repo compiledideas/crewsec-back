@@ -1,9 +1,7 @@
 package com.compiledideas.crewsecback.security.service.implementation;
 
 import com.compiledideas.crewsecback.exceptions.ResourceNotFoundException;
-import com.compiledideas.crewsecback.security.models.Role;
 import com.compiledideas.crewsecback.security.models.User;
-import com.compiledideas.crewsecback.security.repository.RoleRepository;
 import com.compiledideas.crewsecback.security.repository.UserRepository;
 import com.compiledideas.crewsecback.security.service.UserService;
 import lombok.AllArgsConstructor;
@@ -21,16 +19,10 @@ import java.util.stream.Collectors;
 public class UserServiceImplementation implements UserService {
 
     private final UserRepository repository;
-    private final RoleRepository roleRepository;
 
     @Override
     public Page<User> findAll(int page, int size) {
         return repository.findAll(PageRequest.of(page, size));
-    }
-
-    @Override
-    public List<Role> findAllRoles() {
-        return roleRepository.findAll();
     }
 
     @Override
@@ -60,18 +52,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User addUser(User user) {
-        var roles = user.getRoles().stream().map(item -> roleRepository.findById(item.getId()).orElseThrow(() -> new ResourceNotFoundException("no role with id: " + item.getId()))).collect(Collectors.toList());
-        user.setRoles(roles);
-        return repository.save(user);
-    }
 
-    @Override
-    public User addRoleToUser(Long roleId, Long userId) {
-        var user = findById(userId);
-        var role = roleRepository.findById(roleId).orElseThrow(() -> new ResourceNotFoundException("no role with id: " + userId));
-        var roles = user.getRoles();
-        roles.add(role);
-        user.setRoles(roles);
         return repository.save(user);
     }
 

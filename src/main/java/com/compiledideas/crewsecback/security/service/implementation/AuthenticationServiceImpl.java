@@ -29,16 +29,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtAuthenticationResponse signup(SignUpRequest request) {
-        log.info("sign up new user {}", request.getPhone());
+        log.info("sign up new user {}", request.getEmail());
         var salt = RandomStringUtils.random(20, true, true);
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
-                .avatar(request.getAvatar())
                 .salt(salt)
                 .phone(request.getPhone())
-                .roles(request.getRoles())
+                .role(request.getRole())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
@@ -50,12 +49,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public JwtAuthenticationResponse signin(SignInRequest request) {
-        log.info("sign in user {}", request.getPhone());
+        log.info("sign in user {}", request.getEmail());
 
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getPhone(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
-        var user = service.findByPhone(request.getPhone());
+        var user = service.findByEmail(request.getEmail());
         var jwt = jwtService.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).user(user).build();
     }
