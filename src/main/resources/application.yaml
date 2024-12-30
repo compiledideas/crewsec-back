@@ -1,3 +1,22 @@
 spring:
   profiles:
     active: dev
+
+  application:
+    name: crewsec-backend
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+
+storage:
+  location: /Users/blanzin/Desktop/bucket
+
+server:
+  port: 5000
+
