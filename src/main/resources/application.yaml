@@ -14,8 +14,6 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
 
-storage:
-  location: /Users/blanzin/Desktop/bucket
 
 server:
   port: 5000

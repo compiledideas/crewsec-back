@@ -5,6 +5,9 @@ spring:
     username: root
     password: Abde@2001
 
+storage:
+  location: /Users/blanzin/Desktop/bucket
+
 token:
   signing:
     key: phdin9WOVV3EJZdJyVvxeXeG3ieE5IH/WlyQBGC7uGk=
