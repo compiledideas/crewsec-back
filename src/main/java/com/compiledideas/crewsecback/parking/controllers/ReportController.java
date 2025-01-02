@@ -17,9 +17,9 @@ public class ReportController {
 
     private final ReportService service;
     
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Object> findReports(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
-        
+
         return ResponseHandler.generateResponse(
           "Getting page of reports",
           HttpStatus.OK,

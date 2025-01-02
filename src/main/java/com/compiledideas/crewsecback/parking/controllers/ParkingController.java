@@ -15,7 +15,7 @@ public class ParkingController {
 
     private final ParkingService service;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Object> getParking(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
 
         return ResponseHandler.generateResponse(

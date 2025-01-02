@@ -1,5 +1,6 @@
 package com.compiledideas.crewsecback.parking.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,9 +23,10 @@ public class Report {
     private Long id;
 
     private String fullname;
-    private String houseNumber;
-    private String reportedHouseNumber;
+    private int houseNumber;
+    private int reportedHouseNumber;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Parking parking;
 

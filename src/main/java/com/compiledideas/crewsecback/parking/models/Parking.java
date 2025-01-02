@@ -2,6 +2,7 @@ package com.compiledideas.crewsecback.parking.models;
 
 import com.compiledideas.crewsecback.security.models.User;
 import com.compiledideas.crewsecback.utils.enums.PriceUnit;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,9 +30,9 @@ public class Parking {
     private String name;
     private String description;
     private String location;
-    private String capacity;
-    private String nbrOfEmptySpots;
-    private String nbrOfParkingSpots;
+    private int capacity;
+    private int nbrOfEmptySpots;
+    private int nbrOfParkingSpots;
     private boolean security;
     private double latitude;
     private double longitude;
@@ -44,12 +45,15 @@ public class Parking {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parking")
     private List<Report> reports = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parking")
     private List<Vehicle> vehicles = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parking")
     private List<Markulera> markuleras = new ArrayList<>();
 }

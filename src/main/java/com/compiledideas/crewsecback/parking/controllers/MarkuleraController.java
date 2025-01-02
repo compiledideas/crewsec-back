@@ -15,9 +15,9 @@ public class MarkuleraController {
 
     private final MarkuleraService service;
     
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<Object> findMarkuleras(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
-        
+        service.createMarkulera(new Markulera());
         return ResponseHandler.generateResponse(
           "Getting page of Markuleras",
           HttpStatus.OK,
