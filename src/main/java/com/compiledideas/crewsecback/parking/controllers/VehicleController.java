@@ -24,6 +24,16 @@ public class VehicleController {
           service.findAllVehicles(Integer.parseInt(page), Integer.parseInt(limit))      
         );
     }
+
+    @GetMapping("/parking/{parkingId}")
+    public ResponseEntity<Object> findVehiclesByParking(@PathVariable String parkingId, @RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
+
+        return ResponseHandler.generateResponse(
+          "Getting page of Vehicles by Parking "  + parkingId,
+          HttpStatus.OK,
+          service.findAllVehiclesByParking(Long.parseLong(parkingId), Integer.parseInt(page), Integer.parseInt(limit))
+        );
+    }
     
     @GetMapping("/{id}")
     public ResponseEntity<Object> findVehicleById(@PathVariable("id") String id) {
