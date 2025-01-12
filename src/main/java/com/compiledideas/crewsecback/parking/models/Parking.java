@@ -1,7 +1,6 @@
 package com.compiledideas.crewsecback.parking.models;
 
 import com.compiledideas.crewsecback.security.models.User;
-import com.compiledideas.crewsecback.utils.enums.PriceUnit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,8 +35,6 @@ public class Parking {
     private boolean security;
     private double latitude;
     private double longitude;
-    private double price;
-    private PriceUnit priceUnit;
     private String image;
     private String website;
 
