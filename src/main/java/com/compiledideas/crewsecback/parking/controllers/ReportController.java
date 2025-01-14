@@ -28,11 +28,11 @@ public class ReportController {
     }
     
     @GetMapping("/parking/{parkingId}")
-    public ResponseEntity<Object> findReportByParking(@PathVariable("parkingId") String parkingId) {
+    public ResponseEntity<Object> findReportByParking(@PathVariable("parkingId") String parkingId, @RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
         return ResponseHandler.generateResponse(
                 String.format("getting reports of parking '%s'", parkingId),
                 HttpStatus.OK,
-                service.findReportByParking(Long.parseLong(parkingId))
+                service.findReportByParking(Long.parseLong(parkingId), Integer.parseInt(page), Integer.parseInt(limit))
         );
     }
     
