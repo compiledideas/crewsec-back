@@ -1,5 +1,6 @@
 package com.compiledideas.crewsecback.parking.models;
 
+import com.compiledideas.crewsecback.utils.enums.ReportStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,6 +39,8 @@ public class Report {
     private String arrived;
     private String onsite;
     private String finished;
+
+    private ReportStatus status;
 
     @CreationTimestamp
     private Date createdAt;
