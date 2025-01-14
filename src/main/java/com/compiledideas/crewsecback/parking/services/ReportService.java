@@ -9,7 +9,7 @@ public interface ReportService {
 
     Page<Report> findAllReports(Integer page, Integer limit);
     Report findReportById(Long id);
-    Report findReportByParking(Long userId);
+    Page<Report> findReportByParking(Long parkingId, Integer page, Integer limit);
     Report createReport(Report report);
     Report updateReport(Long id, Report report);
     Report deleteReport(Long id);

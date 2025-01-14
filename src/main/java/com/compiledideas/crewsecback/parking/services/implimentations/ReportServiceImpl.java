@@ -28,9 +28,9 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report findReportByParking(Long userId) {
-        var parking = parkingRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Parking", "id", userId));
-        return repository.findByParking(parking).orElseThrow(() -> new ResourceNotFoundException("Report", "user id", userId));
+    public Page<Report> findReportByParking(Long parkingId, Integer page, Integer limit) {
+        var parking = parkingRepository.findById(parkingId).orElseThrow(() -> new ResourceNotFoundException("Parking", "id", parkingId));
+        return repository.findByParking(parking, PageRequest.of(page, limit));
     }
 
 
