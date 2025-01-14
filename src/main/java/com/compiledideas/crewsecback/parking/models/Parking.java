@@ -29,10 +29,7 @@ public class Parking {
     private String name;
     private String description;
     private String location;
-    private int capacity;
-    private int nbrOfEmptySpots;
-    private int nbrOfParkingSpots;
-    private boolean security;
+    private boolean security = true;
     private double latitude;
     private double longitude;
     private String image;
