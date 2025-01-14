@@ -3,6 +3,8 @@ package com.compiledideas.crewsecback.parking.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
@@ -13,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "report")
+@EntityListeners(AuditingEntityListener.class)
 public class Report {
 
     @Id
@@ -26,14 +29,19 @@ public class Report {
 
     private String name;
     private String address;
-    private int houseNumber;
+    private String houseNumber;
     private String phone;
-    private String reportedName;
-    private String reportedAddress;
-    private int reportedHouseNumber;
+    private String disturbingName;
+    private String disturbingAddress;
+    private String disturbingHouseNumber;
 
+    private String arrived;
+    private String onsite;
+    private String finished;
+
+    @CreationTimestamp
     private Date createdAt;
-    private String description;
+    private String additionalInfos;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
