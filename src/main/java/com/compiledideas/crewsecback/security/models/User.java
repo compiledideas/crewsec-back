@@ -12,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,9 +42,9 @@ public class User implements UserDetails {
     private String salt;
     private String passwordReset;
 
-    @OneToMany(mappedBy = "user")
+    @OneToOne(mappedBy = "user")
     @JsonIgnore
-    private List<Parking> parkings = new ArrayList<>();
+    private Parking parking;
 
     private Role role;
 

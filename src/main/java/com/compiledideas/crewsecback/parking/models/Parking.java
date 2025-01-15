@@ -35,7 +35,7 @@ public class Parking {
     private String image;
     private String website;
 
-    @ManyToOne()
+    @OneToOne()
     @JoinColumn(name = "user_id")
     private User user;
 

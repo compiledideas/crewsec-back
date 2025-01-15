@@ -24,7 +24,7 @@ jobs:
           export SPRING_PROFILES_ACTIVE=prod
           export SERVER_PORT=8080
           echo "Activating prod profile and setting port to 8080"
-          mvn clean package
+          mvn clean install package
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
@@ -54,16 +54,16 @@ jobs:
       - name: Stop Existing Application
         run: |
             # Arrêter l'application si elle est déjà en cours d'exécution via systemd
-            sudo systemctl stop springboot-app || true
+            sudo systemctl stop crewsec || true
             echo "Stopped running application (if any)."
 
       - name: Copy JAR and Create Systemd Service
         run: |
             # Créez le dossier de déploiement si nécessaire
-            mkdir -p /home/springboot-app
+            mkdir -p /home/crewsec
             # Copiez le JAR généré dans le dossier de déploiement
-            cp target/blanzin-back-0.0.1-SNAPSHOT.jar /home/springboot-app/app.jar
-            echo "Copied JAR to /home/springboot-app."
+            cp target/blanzin-back-0.0.1-SNAPSHOT.jar /home/crewsec/app.jar
+            echo "Copied JAR to /home/crewsec."
             
             # Créez le fichier de service systemd
             echo "[Unit]
@@ -72,16 +72,16 @@ jobs:
             
             [Service]
             User=root
-            ExecStart=/usr/bin/java -jar -Dspring.profiles.active=prod /home/springboot-app/app.jar
+            ExecStart=/usr/bin/java -jar -Dspring.profiles.active=prod /home/crewsec/app.jar
             
             SuccessExitStatus=143
             StandardOutput=journal
             StandardError=journal
-            WorkingDirectory=/home/springboot-app
+            WorkingDirectory=/home/crewsec
             Restart=always
             
             [Install]
-            WantedBy=multi-user.target" | sudo tee /etc/systemd/system/springboot-app.service > /dev/null
+            WantedBy=multi-user.target" | sudo tee /etc/systemd/system/crewsec.service > /dev/null
             
             # Recharge systemd pour reconnaître le nouveau service
             sudo systemctl daemon-reload
@@ -89,8 +89,8 @@ jobs:
       - name: Start Application as Service
         run: |
           # Démarrez l'application en tant que service
-          sudo systemctl start springboot-app
+          sudo systemctl start crewsec
           
           # Activez le démarrage automatique au boot
-          sudo systemctl enable springboot-app
+          sudo systemctl enable crewsec
           echo "Started application as systemd service."
