@@ -35,6 +35,15 @@ public class ReportController {
                 service.findReportByParking(Long.parseLong(parkingId), Integer.parseInt(page), Integer.parseInt(limit))
         );
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findReportById(@PathVariable("id") String id) {
+        return ResponseHandler.generateResponse(
+                String.format("getting report by id '%s'", id),
+                HttpStatus.OK,
+                service.findReportById(Long.parseLong(id))
+        );
+    }
     
     @PostMapping("/")
     public ResponseEntity<Object> createParking(@RequestBody Report report) {
