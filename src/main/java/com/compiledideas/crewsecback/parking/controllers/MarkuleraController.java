@@ -17,14 +17,25 @@ public class MarkuleraController {
     
     @GetMapping("")
     public ResponseEntity<Object> findMarkuleras(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
-        service.createMarkulera(new Markulera());
         return ResponseHandler.generateResponse(
           "Getting page of Markuleras",
           HttpStatus.OK,
           service.findAllMarkuleras(Integer.parseInt(page), Integer.parseInt(limit))      
         );
     }
-    
+
+    @GetMapping("/parking/{parkingId}")
+    public ResponseEntity<Object> findMarkulerasByParking(
+            @RequestParam(name = "page") String page,
+            @RequestParam(name = "limit",required = false, defaultValue = "12") String limit,
+            @PathVariable String parkingId) {
+        return ResponseHandler.generateResponse(
+          "Getting page of Markuleras",
+          HttpStatus.OK,
+          service.findAllMarkulerasByParking(Integer.parseInt(page), Integer.parseInt(limit), Long.parseLong(parkingId))
+        );
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Object> findMarkuleraById(@PathVariable("id") String id) {
         return ResponseHandler.generateResponse(

@@ -3,6 +3,7 @@ package com.compiledideas.crewsecback.parking.services.implimentations;
 import com.compiledideas.crewsecback.exceptions.ResourceNotFoundException;
 import com.compiledideas.crewsecback.parking.models.Markulera;
 import com.compiledideas.crewsecback.parking.repositories.MarkuleraRepository;
+import com.compiledideas.crewsecback.parking.repositories.ParkingRepository;
 import com.compiledideas.crewsecback.parking.services.MarkuleraService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,10 +15,18 @@ import org.springframework.stereotype.Service;
 public class MarkuleraServiceImpl implements MarkuleraService {
 
     private final MarkuleraRepository repository;
+    private final ParkingRepository parkingRepository;
 
     @Override
     public Page<Markulera> findAllMarkuleras(Integer page, Integer limit) {
+
         return repository.findAll(PageRequest.of(page, limit));
+    }
+
+    @Override
+    public Page<Markulera> findAllMarkulerasByParking(Integer page, Integer limit, Long parkingId) {
+        var parking = parkingRepository.findById(parkingId).orElseThrow(() -> new ResourceNotFoundException("parking", "id", parkingId));
+        return repository.findAllByParking(PageRequest.of(page, limit), parking);
     }
 
     @Override

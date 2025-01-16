@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 @Qualifier("markulera_jpa_service")
 public interface MarkuleraService {
     Page<Markulera> findAllMarkuleras(Integer page, Integer limit);
+    Page<Markulera> findAllMarkulerasByParking(Integer page, Integer limit, Long parkingId);
     Markulera findMarkuleraById(Long id);
     Markulera createMarkulera(Markulera Markulera);
     Markulera updateMarkulera(Long id, Markulera Markulera);

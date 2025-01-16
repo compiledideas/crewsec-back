@@ -17,7 +17,9 @@ public class UserManagementController {
 
 
     @GetMapping("")
-    public ResponseEntity<Object> findUsers(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
+    public ResponseEntity<Object> findUsers(
+            @RequestParam(name = "page") String page,
+            @RequestParam(name = "limit",required = false, defaultValue = "12") String limit ) {
 
         return ResponseHandler.generateResponse(
                 "Getting page of Users",
@@ -36,25 +38,25 @@ public class UserManagementController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> createParking(@RequestBody User User) {
+    public ResponseEntity<Object> createParking(@RequestBody User user) {
         return ResponseHandler.generateResponse(
                 "Added new User successfully.",
                 HttpStatus.CREATED,
-                service.addUser(User)
+                service.addUser(user)
         );
     }
 
-    @PostMapping("/{UserId}")
-    public ResponseEntity<Object> updateParking(@PathVariable("UserId") String UserId, @RequestBody User User) {
+    @PostMapping("/{userId}")
+    public ResponseEntity<Object> updateParking(@PathVariable("userId") String userId, @RequestBody User user) {
         return ResponseHandler.generateResponse(
-                String.format("Updated User '%s' successfully.", UserId),
+                String.format("Updated User '%s' successfully.", userId),
                 HttpStatus.OK,
-                service.updateUser(Long.parseLong(UserId), User)
+                service.updateUser(Long.parseLong(userId), user)
         );
     }
 
-    @DeleteMapping("/{UserId}")
-    public ResponseEntity<Object> deleteParking(@PathVariable("UserId") String userId) {
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Object> deleteParking(@PathVariable("userId") String userId) {
         return ResponseHandler.generateResponse(
                 String.format("Deleted User '%s' successfully.", userId),
                 HttpStatus.OK,

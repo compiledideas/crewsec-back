@@ -13,9 +13,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "markulera")
+@Table(name = "felparkering")
 @EntityListeners(AuditingEntityListener.class)
-public class Markulera {
+public class Felparkering {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE,
@@ -31,6 +31,6 @@ public class Markulera {
     @ManyToOne
     private Parking parking;
 
-   @CreatedDate
+    @CreatedDate
     private Date createdAt;
 }
