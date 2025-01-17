@@ -45,6 +45,16 @@ public class MarkuleraController {
         );
     }
     
+    @PostMapping("/resolve")
+    public ResponseEntity<Object> resolveMarkulera(@RequestParam(name = "id") String id) {
+        return ResponseHandler.generateResponse(
+          "mark markulera with id '" + id + "' as resolved",
+          HttpStatus.CREATED,
+          service.resolveMarkuleraById(Long.parseLong(id))
+        );
+    }
+
+
     @PostMapping("/")
     public ResponseEntity<Object> createParking(@RequestBody Markulera markulera) {
         return ResponseHandler.generateResponse(

@@ -9,6 +9,7 @@ public interface MarkuleraService {
     Page<Markulera> findAllMarkuleras(Integer page, Integer limit);
     Page<Markulera> findAllMarkulerasByParking(Integer page, Integer limit, Long parkingId);
     Markulera findMarkuleraById(Long id);
+    Markulera resolveMarkuleraById(Long id);
     Markulera createMarkulera(Markulera Markulera);
     Markulera updateMarkulera(Long id, Markulera Markulera);
     Markulera deleteMarkulera(Long id);

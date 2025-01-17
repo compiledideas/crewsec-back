@@ -34,6 +34,13 @@ public class FelparkeringServiceImpl implements FelparkeringService {
     }
 
     @Override
+    public Felparkering resolveFelparkeringById(Long id) {
+        var felparkering = findFelparkeringById(id);
+        felparkering.setResolved(true);
+        return repository.save(felparkering);
+    }
+
+    @Override
     public Felparkering createFelparkering(Felparkering Felparkering) {
         return repository.save(Felparkering);
     }

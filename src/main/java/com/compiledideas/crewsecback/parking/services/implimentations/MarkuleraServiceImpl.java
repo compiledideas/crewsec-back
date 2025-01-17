@@ -35,6 +35,13 @@ public class MarkuleraServiceImpl implements MarkuleraService {
     }
 
     @Override
+    public Markulera resolveMarkuleraById(Long id) {
+        var markulera = findMarkuleraById(id);
+        markulera.setResolved(true);
+        return repository.save(markulera);
+    }
+
+    @Override
     public Markulera createMarkulera(Markulera markulera) {
         return repository.save(markulera);
     }

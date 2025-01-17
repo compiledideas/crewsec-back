@@ -47,6 +47,15 @@ public class FelparkeringController {
                 service.findFelparkeringById(Long.parseLong(id))
         );
     }
+
+    @PostMapping("/resolve")
+    public ResponseEntity<Object> resolveFelparkeringById(@RequestParam(name = "id") String id) {
+        return ResponseHandler.generateResponse(
+                String.format("mark Felparkerings by id '%s' as resolved", id),
+                HttpStatus.OK,
+                service.resolveFelparkeringById(Long.parseLong(id))
+        );
+    }
     
     @PostMapping("/")
     public ResponseEntity<Object> createParking(@RequestBody Felparkering Felparkering) {

@@ -27,6 +27,7 @@ public class Markulera {
     private Long id;
     private String reference;
     private String cause;
+    private boolean resolved = false;
 
     @ManyToOne
     private Parking parking;
