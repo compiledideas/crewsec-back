@@ -65,7 +65,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<Object>  handleBadCredentialsException(BadCredentialsException ex) {
         logger.error("Status:  {} - {}", HttpStatus.UNAUTHORIZED, ex.getMessage());
         return ResponseHandler.generateResponse(
-                "phone number or password incorrect: " + ex.getMessage(),
+                "Email or password incorrect: " + ex.getMessage(),
                 HttpStatus.UNAUTHORIZED,
                 "Password is incorrect"
         );

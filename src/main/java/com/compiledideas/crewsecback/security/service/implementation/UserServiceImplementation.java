@@ -42,7 +42,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return repository.findByPhone(username).orElseThrow(() -> new ResourceNotFoundException("can't find user with username: " + username));
+        return repository.findByEmail(username).orElseThrow(() -> new ResourceNotFoundException("can't find user with username: " + username));
     }
 
     @Override
