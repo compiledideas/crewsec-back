@@ -3,7 +3,6 @@ package com.compiledideas.crewsecback.parking.controllers;
 import com.compiledideas.crewsecback.parking.models.Parking;
 import com.compiledideas.crewsecback.parking.services.ParkingService;
 import com.compiledideas.crewsecback.security.service.JwtService;
-import com.compiledideas.crewsecback.security.service.implementation.JwtServiceImpl;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -28,6 +27,16 @@ public class ParkingController {
           "Getting page of parking",
           HttpStatus.OK,
           service.findAllParkings(Integer.parseInt(page), Integer.parseInt(limit))
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getParkingById(@PathVariable String id) {
+
+        return ResponseHandler.generateResponse(
+          "Getting page of parking",
+          HttpStatus.OK,
+          service.findParkingById(Long.parseLong(id))
         );
     }
 

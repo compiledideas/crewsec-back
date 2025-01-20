@@ -4,10 +4,14 @@ import com.compiledideas.crewsecback.parking.models.Parking;
 import com.compiledideas.crewsecback.parking.models.Report;
 import com.compiledideas.crewsecback.parking.services.ParkingService;
 import com.compiledideas.crewsecback.parking.services.ReportService;
+import com.compiledideas.crewsecback.security.service.JwtService;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -16,7 +20,8 @@ import org.springframework.web.bind.annotation.*;
 public class ReportController {
 
     private final ReportService service;
-    
+    private final JwtService jwtService;
+
     @GetMapping("")
     public ResponseEntity<Object> findReports(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
 
@@ -33,6 +38,18 @@ public class ReportController {
                 String.format("getting reports of parking '%s'", parkingId),
                 HttpStatus.OK,
                 service.findReportByParking(Long.parseLong(parkingId), Integer.parseInt(page), Integer.parseInt(limit))
+        );
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Object> findReportByAuthenticatedUser(@NonNull HttpServletRequest request, @RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
+        String username = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+
+        return ResponseHandler.generateResponse(
+                String.format("getting reports of parking of user by username '%s'", username),
+                HttpStatus.OK,
+                service.findReportByUsername(username, Integer.parseInt(page), Integer.parseInt(limit))
         );
     }
 

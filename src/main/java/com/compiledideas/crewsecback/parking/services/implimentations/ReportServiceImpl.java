@@ -2,8 +2,8 @@ package com.compiledideas.crewsecback.parking.services.implimentations;
 
 import com.compiledideas.crewsecback.exceptions.ResourceNotFoundException;
 import com.compiledideas.crewsecback.parking.models.Report;
-import com.compiledideas.crewsecback.parking.repositories.ParkingRepository;
 import com.compiledideas.crewsecback.parking.repositories.ReportRepository;
+import com.compiledideas.crewsecback.parking.services.ParkingService;
 import com.compiledideas.crewsecback.parking.services.ReportService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository repository;
-    private final ParkingRepository parkingRepository;
+    private final ParkingService parkingService;
 
     @Override
     public Page<Report> findAllReports(Integer page, Integer limit) {
@@ -29,7 +29,13 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Page<Report> findReportByParking(Long parkingId, Integer page, Integer limit) {
-        var parking = parkingRepository.findById(parkingId).orElseThrow(() -> new ResourceNotFoundException("Parking", "id", parkingId));
+        var parking = parkingService.findParkingById(parkingId);
+        return repository.findByParking(parking, PageRequest.of(page, limit));
+    }
+
+    @Override
+    public Page<Report> findReportByUsername(String email, Integer page, Integer limit) {
+        var parking = parkingService.findParkingByUserEmail(email);
         return repository.findByParking(parking, PageRequest.of(page, limit));
     }
 

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 public interface MarkuleraService {
     Page<Markulera> findAllMarkuleras(Integer page, Integer limit);
     Page<Markulera> findAllMarkulerasByParking(Integer page, Integer limit, Long parkingId);
+    Page<Markulera> findAllMarkulerasByUserEmail(Integer page, Integer limit, String email);
     Markulera findMarkuleraById(Long id);
     Markulera resolveMarkuleraById(Long id);
     Markulera createMarkulera(Markulera Markulera);

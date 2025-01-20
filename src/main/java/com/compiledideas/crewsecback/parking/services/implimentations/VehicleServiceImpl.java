@@ -2,8 +2,8 @@ package com.compiledideas.crewsecback.parking.services.implimentations;
 
 import com.compiledideas.crewsecback.exceptions.ResourceNotFoundException;
 import com.compiledideas.crewsecback.parking.models.Vehicle;
-import com.compiledideas.crewsecback.parking.repositories.ParkingRepository;
 import com.compiledideas.crewsecback.parking.repositories.VehicleRepository;
+import com.compiledideas.crewsecback.parking.services.ParkingService;
 import com.compiledideas.crewsecback.parking.services.VehicleService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service("vehicle_jpa_service")
 public class VehicleServiceImpl implements VehicleService {
     private final VehicleRepository repository;
-    private final ParkingRepository parkingRepository;
+    private final ParkingService parkingService;
 
     @Override
     public Page<Vehicle> findAllVehicles(Integer page, Integer limit) {
@@ -23,7 +23,13 @@ public class VehicleServiceImpl implements VehicleService {
 
     @Override
     public Page<Vehicle> findAllVehiclesByParking(Long parkingId, Integer page, Integer limit) {
-        var parking = parkingRepository.findById(parkingId).orElseThrow(() -> new ResourceNotFoundException("parking", "id", parkingId));
+        var parking = parkingService.findParkingById(parkingId);
+        return repository.findAllByParking(parking, PageRequest.of(page, limit));
+    }
+
+    @Override
+    public Page<Vehicle> findAllVehiclesByUserEmail(String email, Integer page, Integer limit) {
+        var parking = parkingService.findParkingByUserEmail(email);
         return repository.findAllByParking(parking, PageRequest.of(page, limit));
     }
 

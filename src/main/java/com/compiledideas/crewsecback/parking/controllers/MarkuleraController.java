@@ -2,10 +2,14 @@ package com.compiledideas.crewsecback.parking.controllers;
 
 import com.compiledideas.crewsecback.parking.models.Markulera;
 import com.compiledideas.crewsecback.parking.services.MarkuleraService;
+import com.compiledideas.crewsecback.security.service.JwtService;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -14,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class MarkuleraController {
 
     private final MarkuleraService service;
-    
+    private final JwtService jwtService;
+
     @GetMapping("")
     public ResponseEntity<Object> findMarkuleras(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
         return ResponseHandler.generateResponse(
@@ -42,6 +47,18 @@ public class MarkuleraController {
                 String.format("getting Markuleras by id '%s'", id),
                 HttpStatus.OK,
                 service.findMarkuleraById(Long.parseLong(id))
+        );
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Object> findVehiclesByAuthenticatedUser(@NonNull HttpServletRequest request, @RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
+        String username = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+
+        return ResponseHandler.generateResponse(
+                String.format("getting markuleras of parking of user by username '%s'", username),
+                HttpStatus.OK,
+                service.findAllMarkulerasByUserEmail( Integer.parseInt(page), Integer.parseInt(limit), username)
         );
     }
     

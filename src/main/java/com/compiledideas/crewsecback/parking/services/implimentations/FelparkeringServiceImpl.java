@@ -3,8 +3,8 @@ package com.compiledideas.crewsecback.parking.services.implimentations;
 import com.compiledideas.crewsecback.exceptions.ResourceNotFoundException;
 import com.compiledideas.crewsecback.parking.models.Felparkering;
 import com.compiledideas.crewsecback.parking.repositories.FelparkeringRepository;
-import com.compiledideas.crewsecback.parking.repositories.ParkingRepository;
 import com.compiledideas.crewsecback.parking.services.FelparkeringService;
+import com.compiledideas.crewsecback.parking.services.ParkingService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class FelparkeringServiceImpl implements FelparkeringService {
 
     private final FelparkeringRepository repository;
-    private final ParkingRepository parkingRepository;
+    private final ParkingService parkingService;
 
     @Override
     public Page<Felparkering> findAllFelparkerings(Integer page, Integer limit) {
@@ -24,7 +24,13 @@ public class FelparkeringServiceImpl implements FelparkeringService {
 
     @Override
     public Page<Felparkering> findAllFelparkeringsByParking(Integer page, Integer limit, Long parkingId) {
-        var parking = parkingRepository.findById(parkingId).orElseThrow(() -> new ResourceNotFoundException("parking", "id", parkingId));
+        var parking = parkingService.findParkingById(parkingId);
+        return repository.findAllByParking(PageRequest.of(page, limit), parking);
+    }
+
+    @Override
+    public Page<Felparkering> findAllFelparkeringsByUserEmail(Integer page, Integer limit, String email) {
+        var parking = parkingService.findParkingByUserEmail(email);
         return repository.findAllByParking(PageRequest.of(page, limit), parking);
     }
 

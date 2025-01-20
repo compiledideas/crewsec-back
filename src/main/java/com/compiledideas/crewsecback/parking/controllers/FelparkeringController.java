@@ -2,10 +2,14 @@ package com.compiledideas.crewsecback.parking.controllers;
 
 import com.compiledideas.crewsecback.parking.models.Felparkering;
 import com.compiledideas.crewsecback.parking.services.FelparkeringService;
+import com.compiledideas.crewsecback.security.service.JwtService;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -14,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class FelparkeringController {
 
     private final FelparkeringService service;
-    
+    private final JwtService jwtService;
+
     @GetMapping("")
     public ResponseEntity<Object> findFelparkerings(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
         return ResponseHandler.generateResponse(
@@ -36,6 +41,18 @@ public class FelparkeringController {
           "Getting page of Felparkerings",
           HttpStatus.OK,
           service.findAllFelparkeringsByParking(Integer.parseInt(page), Integer.parseInt(limit), Long.parseLong(parkingId))
+        );
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Object> findVehiclesByAuthenticatedUser(@NonNull HttpServletRequest request, @RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
+        String username = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+
+        return ResponseHandler.generateResponse(
+                String.format("getting felparkerings of parking of user by username '%s'", username),
+                HttpStatus.OK,
+                service.findAllFelparkeringsByUserEmail(Integer.parseInt(page), Integer.parseInt(limit), username)
         );
     }
     
