@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 @Service("user_service")
 public class UserServiceImplementation implements UserService {
@@ -40,6 +42,11 @@ public class UserServiceImplementation implements UserService {
     @Override
     public User findByEmail(String email) {
         return repository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("can't find user with email: " + email));
+    }
+
+    @Override
+    public Optional<User> findByEmailOptional(String email) {
+        return repository.findByEmail(email);
     }
 
     @Override

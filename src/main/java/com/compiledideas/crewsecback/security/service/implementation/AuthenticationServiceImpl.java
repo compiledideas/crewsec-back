@@ -33,8 +33,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         log.info("sign up new user {}", request.getEmail());
         var salt = RandomStringUtils.random(20, true, true);
 
-        var userWithSameEmail = service.findByEmail(request.getEmail());
-        if (userWithSameEmail != null) {
+        var userWithSameEmail = service.findByEmailOptional(request.getEmail());
+        if (userWithSameEmail.isPresent()) {
             throw new UserAlreadyExist("User with email " + request.getEmail() + " already exists");
         }
 
