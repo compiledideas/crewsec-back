@@ -3,6 +3,7 @@ package com.compiledideas.crewsecback.exceptions.handlers;
 
 import com.compiledideas.crewsecback.exceptions.ResourceNotFoundException;
 import com.compiledideas.crewsecback.exceptions.StorageException;
+import com.compiledideas.crewsecback.exceptions.UserAlreadyExist;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 ex.getMessage(),
                 HttpStatus.UNAUTHORIZED,
                 "This username is not registered in the database"
+        );
+    }
+
+    @ExceptionHandler(UserAlreadyExist.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected ResponseEntity<Object>  handleUsernameAlreadyExistException(UserAlreadyExist ex) {
+        logger.error( "Status:  " + HttpStatus.FORBIDDEN + " - " + ex.getMessage());
+        return ResponseHandler.generateResponse(
+                ex.getMessage(),
+                HttpStatus.UNAUTHORIZED,
+                "This email is already registered with other account"
         );
     }
 

@@ -1,6 +1,7 @@
 package com.compiledideas.crewsecback.security.service.implementation;
 
 
+import com.compiledideas.crewsecback.exceptions.UserAlreadyExist;
 import com.compiledideas.crewsecback.security.models.User;
 import com.compiledideas.crewsecback.security.request.SignInRequest;
 import com.compiledideas.crewsecback.security.request.SignUpRequest;
@@ -31,6 +32,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public JwtAuthenticationResponse signup(SignUpRequest request) {
         log.info("sign up new user {}", request.getEmail());
         var salt = RandomStringUtils.random(20, true, true);
+
+        var userWithSameEmail = service.findByEmail(request.getEmail());
+        if (userWithSameEmail != null) {
+            throw new UserAlreadyExist("User with email " + request.getEmail() + " already exists");
+        }
+
         var user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
