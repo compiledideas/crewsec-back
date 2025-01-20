@@ -34,6 +34,12 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
+    public Parking findParkingByUserEmail(String email) {
+        var user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("can't find user with email: " + email));
+        return repository.findByUser(user).orElseThrow(() -> new ResourceNotFoundException("can't find parking with email: " + email));
+    }
+
+    @Override
     public Parking createParking(Parking parking) {
         return repository.save(parking);
     }

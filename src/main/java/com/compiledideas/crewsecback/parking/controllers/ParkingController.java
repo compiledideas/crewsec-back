@@ -2,10 +2,15 @@ package com.compiledideas.crewsecback.parking.controllers;
 
 import com.compiledideas.crewsecback.parking.models.Parking;
 import com.compiledideas.crewsecback.parking.services.ParkingService;
+import com.compiledideas.crewsecback.security.service.JwtService;
+import com.compiledideas.crewsecback.security.service.implementation.JwtServiceImpl;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class ParkingController {
 
     private final ParkingService service;
+    private final JwtService jwtService;
 
     @GetMapping("")
     public ResponseEntity<Object> getParking(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
@@ -31,6 +37,18 @@ public class ParkingController {
                 String.format("getting parkings of user '%s'", userId),
                 HttpStatus.OK,
                 service.findParkingByUser(Long.parseLong(userId))
+        );
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Object> getParkingByUserEmail(@NonNull HttpServletRequest request) {
+        String username = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
+
+        return ResponseHandler.generateResponse(
+                String.format("getting parking of user '%s'", username),
+                HttpStatus.OK,
+                service.findParkingByUserEmail(username)
         );
     }
 
