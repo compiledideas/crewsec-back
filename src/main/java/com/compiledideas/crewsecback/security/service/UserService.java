@@ -11,10 +11,8 @@ public interface UserService extends UserDetailsService {
     Page<User> findAll(int page, int size);
     User findById(Long id);
     User findByPasswordReset(String passwordReset);
-    User findByEmail(String email);
-    User findByUsername(String username);
-    User findByPhone(String phone);
     User addUser(User user);
+    User findByEmail(String email);
     User updateUser(Long id, User user);
     User deleteUser(User user);
     User deleteUserById(Long userId);

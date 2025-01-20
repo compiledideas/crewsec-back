@@ -54,7 +54,7 @@ public class AuthenticationController {
         return ResponseHandler.generateResponse(
                 "Token is valid and user is logged in.",
                 HttpStatus.OK,
-                userService.findByUsername(username)
+                userService.loadUserByUsername(username)
         );
     }
 }
