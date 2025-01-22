@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -46,6 +47,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 ex.getMessage(),
                 HttpStatus.UNAUTHORIZED,
                 "This username is not registered in the database"
+        );
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected ResponseEntity<Object>  handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
+        logger.error( " - Status:  " + HttpStatus.UNAUTHORIZED + " - " + ex.getMessage());
+        return ResponseHandler.generateResponse(
+                ex.getMessage(),
+                HttpStatus.UNAUTHORIZED,
+                "you don't have the right to access this endpoint"
         );
     }
 

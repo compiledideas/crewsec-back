@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         logger.info("User: {} trying to access: {}", ipAddress, request.getRequestURI());
 
-        if (StringUtils.isEmpty(authHeader) || authHeader.startsWith("Bearer ")) {
+        if (StringUtils.isEmpty(authHeader) || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }

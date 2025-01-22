@@ -6,15 +6,17 @@ import com.compiledideas.crewsecback.utils.ResponseHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/v1/users")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class UserManagementController {
     
     private UserService service;
-
 
     @GetMapping("")
     public ResponseEntity<Object> findUsers(
