@@ -24,15 +24,15 @@ public class Utils {
     }
 
     public static String getBaseUrl(HttpServletRequest request) {
-        String scheme = request.getScheme(); // http or https
-        String serverName = request.getServerName(); // hostname or IP
-        int serverPort = request.getServerPort(); // port number
-        String contextPath = request.getContextPath(); // application context
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
 
         if (serverPort == 80 || serverPort == 443) {
-            return scheme + "://" + serverName + contextPath;
+            return scheme + "s://" + serverName + contextPath;
         } else {
-            return scheme + "://" + serverName + ":" + serverPort + contextPath;
+            return scheme + "s://" + serverName + ":" + serverPort + contextPath;
         }
     }
 }
