@@ -111,6 +111,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <finalName>crewsec</finalName>
         </plugins>
     </build>
 
