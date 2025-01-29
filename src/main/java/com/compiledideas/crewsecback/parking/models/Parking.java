@@ -29,11 +29,11 @@ public class Parking {
     private String name;
     private String description;
     private String location;
-    private boolean security = true;
-    private double latitude;
-    private double longitude;
+
+    @Lob
     private String image;
     private String website;
+    private String address;
 
     @OneToOne()
     @JoinColumn(name = "user_id")
