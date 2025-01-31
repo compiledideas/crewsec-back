@@ -2,11 +2,11 @@ package com.compiledideas.crewsecback.storage;
 
 import com.compiledideas.crewsecback.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,14 +48,14 @@ public class BucketController {
 
     @GetMapping(
             value = "/images/download/{imageName}",
-            produces = "image/*"
+            produces = MediaType.IMAGE_JPEG_VALUE
     )
     public Object downloadImage(@PathVariable String imageName) {
 
         return service.getFile(imageName, "/images");
     }
 
-    @GetMapping(value = "/docs/download/{imageName}", produces = "*/*")
+    @GetMapping(value = "/docs/download/{imageName}", produces = MediaType.ALL_VALUE)
     public Object downloadResumeDocument(@PathVariable String imageName) {
 
         return service.getFile(imageName, "/docs");
