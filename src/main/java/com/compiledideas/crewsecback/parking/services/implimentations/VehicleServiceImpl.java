@@ -22,10 +22,20 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public Page<Vehicle> searchAllVehicles(Integer page, Integer limit, String query) {
+        return repository.findAllByReferenceContainingIgnoreCase(query, PageRequest.of(page, limit));
+    }
+
+    @Override
     public Page<Vehicle> findAllVehiclesByParking(Long parkingId, Integer page, Integer limit) {
         var parking = parkingService.findParkingById(parkingId);
         return repository.findAllByParking(parking, PageRequest.of(page, limit));
     }
+
+    @Override
+    public Page<Vehicle> searchAllVehiclesByParking(Long parkingId, Integer page, Integer limit, String query) {
+        var parking = parkingService.findParkingById(parkingId);
+        return repository.findAllByParkingAndReferenceContainingIgnoreCase(parking, query, PageRequest.of(page, limit));    }
 
     @Override
     public Page<Vehicle> findAllVehiclesByUserEmail(String email, Integer page, Integer limit) {

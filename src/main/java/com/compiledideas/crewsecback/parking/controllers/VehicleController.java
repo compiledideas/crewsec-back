@@ -21,22 +21,22 @@ public class VehicleController {
     private final JwtService jwtService;
 
     @GetMapping("")
-    public ResponseEntity<Object> findVehicles(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
+    public ResponseEntity<Object> findVehicles(@RequestParam(name = "page") String page, @RequestParam(name = "query", required = false, defaultValue = "") String query, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
         
         return ResponseHandler.generateResponse(
           "Getting page of Vehicles",
           HttpStatus.OK,
-          service.findAllVehicles(Integer.parseInt(page), Integer.parseInt(limit))      
+          service.searchAllVehicles(Integer.parseInt(page), Integer.parseInt(limit), query)
         );
     }
 
     @GetMapping("/parking/{parkingId}")
-    public ResponseEntity<Object> findVehiclesByParking(@PathVariable String parkingId, @RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
+    public ResponseEntity<Object> findVehiclesByParking(@PathVariable String parkingId, @RequestParam(name = "page") String page, @RequestParam(name = "query", required = false, defaultValue = "") String query, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
 
         return ResponseHandler.generateResponse(
           "Getting page of Vehicles by Parking "  + parkingId,
           HttpStatus.OK,
-          service.findAllVehiclesByParking(Long.parseLong(parkingId), Integer.parseInt(page), Integer.parseInt(limit))
+          service.searchAllVehiclesByParking(Long.parseLong(parkingId), Integer.parseInt(page), Integer.parseInt(limit), query)
         );
     }
     

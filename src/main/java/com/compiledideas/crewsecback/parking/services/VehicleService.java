@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 @Qualifier("vehicle_jpa_service")
 public interface VehicleService {
     Page<Vehicle> findAllVehicles(Integer page, Integer limit);
+    Page<Vehicle> searchAllVehicles(Integer page, Integer limit, String query);
     Page<Vehicle> findAllVehiclesByParking(Long parkingId, Integer page, Integer limit);
+    Page<Vehicle> searchAllVehiclesByParking(Long parkingId, Integer page, Integer limit, String query);
     Page<Vehicle> findAllVehiclesByUserEmail(String email, Integer page, Integer limit);
     Vehicle findVehicleById(Long id);
     Vehicle createVehicle(Vehicle Vehicle);
