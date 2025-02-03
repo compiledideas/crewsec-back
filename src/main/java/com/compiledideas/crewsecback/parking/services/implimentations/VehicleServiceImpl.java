@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 @Service("vehicle_jpa_service")
 public class VehicleServiceImpl implements VehicleService {
@@ -48,6 +50,10 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public Page<Vehicle> searchAllVehiclesByUserEmail(String email, Integer page, Integer limit, String query) {
         var parking = parkingService.findParkingByUserEmail(email);
+
+        if(Objects.equals(query, "")){
+            return repository.findAllByParking(parking, PageRequest.of(page, limit));
+        }
         return repository.findAllByParkingAndReferenceContainingIgnoreCase(parking, query, PageRequest.of(page, limit));
     }
 
