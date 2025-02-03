@@ -51,7 +51,7 @@ public class VehicleServiceImpl implements VehicleService {
     public Page<Vehicle> searchAllVehiclesByUserEmail(String email, Integer page, Integer limit, String query) {
         var parking = parkingService.findParkingByUserEmail(email);
 
-        if(Objects.equals(query, "")){
+        if(query.isEmpty()){
             return repository.findAllByParking(parking, PageRequest.of(page, limit));
         }
         return repository.findAllByParkingAndReferenceContainingIgnoreCase(parking, query, PageRequest.of(page, limit));

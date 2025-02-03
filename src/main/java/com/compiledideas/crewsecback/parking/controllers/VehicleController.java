@@ -51,7 +51,7 @@ public class VehicleController {
 
     @GetMapping("/user")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Object> findVehiclesByAuthenticatedUser(@NonNull HttpServletRequest request, @RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit, @RequestParam(name = "query",required = false, defaultValue = "query") String query) {
+    public ResponseEntity<Object> findVehiclesByAuthenticatedUser(@NonNull HttpServletRequest request, @RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit, @RequestParam(name = "query",required = false, defaultValue = "") String query) {
         String username = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
 
         return ResponseHandler.generateResponse(
