@@ -12,5 +12,4 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     Page<Vehicle> findAllByParking(Parking parking, Pageable pageable);
     Page<Vehicle> findAllByReferenceContainingIgnoreCase(String reference, Pageable pageable);
     Page<Vehicle> findAllByParkingAndReferenceContainingIgnoreCase(Parking parking, String reference, Pageable pageable);
-
 }

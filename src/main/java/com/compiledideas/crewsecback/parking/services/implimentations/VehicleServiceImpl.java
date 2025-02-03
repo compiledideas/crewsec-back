@@ -5,6 +5,7 @@ import com.compiledideas.crewsecback.parking.models.Vehicle;
 import com.compiledideas.crewsecback.parking.repositories.VehicleRepository;
 import com.compiledideas.crewsecback.parking.services.ParkingService;
 import com.compiledideas.crewsecback.parking.services.VehicleService;
+import com.compiledideas.crewsecback.security.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,12 +36,19 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public Page<Vehicle> searchAllVehiclesByParking(Long parkingId, Integer page, Integer limit, String query) {
         var parking = parkingService.findParkingById(parkingId);
-        return repository.findAllByParkingAndReferenceContainingIgnoreCase(parking, query, PageRequest.of(page, limit));    }
+        return repository.findAllByParkingAndReferenceContainingIgnoreCase(parking, query, PageRequest.of(page, limit));
+    }
 
     @Override
     public Page<Vehicle> findAllVehiclesByUserEmail(String email, Integer page, Integer limit) {
         var parking = parkingService.findParkingByUserEmail(email);
         return repository.findAllByParking(parking, PageRequest.of(page, limit));
+    }
+
+    @Override
+    public Page<Vehicle> searchAllVehiclesByUserEmail(String email, Integer page, Integer limit, String query) {
+        var parking = parkingService.findParkingByUserEmail(email);
+        return repository.findAllByParkingAndReferenceContainingIgnoreCase(parking, query, PageRequest.of(page, limit));
     }
 
     @Override
