@@ -13,5 +13,6 @@ public interface ReportService {
     Page<Report> findReportByUsername(String email, Integer page, Integer limit);
     Report createReport(Report report);
     Report updateReport(Long id, Report report);
+    Report resolveReport(Long id);
     Report deleteReport(Long id);
 }

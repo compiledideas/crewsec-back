@@ -63,7 +63,7 @@ public class ReportController {
     }
     
     @PostMapping("/")
-    public ResponseEntity<Object> createParking(@RequestBody Report report) {
+    public ResponseEntity<Object> createReport(@RequestBody Report report) {
         return ResponseHandler.generateResponse(
           "Added new parking successfully.",
           HttpStatus.CREATED,
@@ -72,16 +72,25 @@ public class ReportController {
     }
     
     @PostMapping("/{reportId}")
-    public ResponseEntity<Object> updateParking(@PathVariable("reportId") String reportId, @RequestBody Report report) {
+    public ResponseEntity<Object> updateReport(@PathVariable("reportId") String reportId, @RequestBody Report report) {
         return ResponseHandler.generateResponse(
                 String.format("Updated report '%s' successfully.", reportId),
                 HttpStatus.OK,
                 service.updateReport(Long.parseLong(reportId), report)
         );
     }
+
+    @PostMapping("/resolve")
+    public ResponseEntity<Object> resolveReport(@RequestParam(name = "id") String id) {
+        return ResponseHandler.generateResponse(
+                String.format("resolved report '%s' successfully.", id),
+                HttpStatus.OK,
+                service.resolveReport(Long.parseLong(id))
+        );
+    }
     
     @DeleteMapping("/{reportId}")
-    public ResponseEntity<Object> deleteParking(@PathVariable("reportId") String reportId) {
+    public ResponseEntity<Object> deleteReport(@PathVariable("reportId") String reportId) {
         return ResponseHandler.generateResponse(
                 String.format("Deleted report '%s' successfully.", reportId),
                 HttpStatus.OK,

@@ -5,6 +5,7 @@ import com.compiledideas.crewsecback.parking.models.Report;
 import com.compiledideas.crewsecback.parking.repositories.ReportRepository;
 import com.compiledideas.crewsecback.parking.services.ParkingService;
 import com.compiledideas.crewsecback.parking.services.ReportService;
+import com.compiledideas.crewsecback.utils.enums.ReportStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,6 +49,13 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Report updateReport(Long id, Report report) {
         report.setId(id);
+        return repository.save(report);
+    }
+
+    @Override
+    public Report resolveReport(Long id) {
+        var report = findReportById(id);
+        report.setStatus(ReportStatus.RESOLVED);
         return repository.save(report);
     }
 
