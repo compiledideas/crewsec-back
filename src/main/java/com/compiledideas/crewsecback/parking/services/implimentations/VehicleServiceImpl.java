@@ -5,14 +5,12 @@ import com.compiledideas.crewsecback.parking.models.Vehicle;
 import com.compiledideas.crewsecback.parking.repositories.VehicleRepository;
 import com.compiledideas.crewsecback.parking.services.ParkingService;
 import com.compiledideas.crewsecback.parking.services.VehicleService;
-import com.compiledideas.crewsecback.security.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Objects;
 
 @AllArgsConstructor
 @Service("vehicle_jpa_service")
@@ -33,7 +31,12 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public Page<Vehicle> findAllVehiclesByParking(Long parkingId, Integer page, Integer limit) {
         var parking = parkingService.findParkingById(parkingId);
-        return repository.findAllByParking(parking, PageRequest.of(page, limit));
+        return repository.findAllByParkingAndLeaveDateIsAfter(parking, new Date(), PageRequest.of(page, limit));
+    }
+
+    @Override
+    public Page<Vehicle> findAllVehiclesByParkingBeforeNow(Long parkingId, Integer page, Integer limit) {
+        return null;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public Page<Vehicle> findAllVehiclesByUserEmail(String email, Integer page, Integer limit) {
         var parking = parkingService.findParkingByUserEmail(email);
-        return repository.findAllByParking(parking, PageRequest.of(page, limit));
+        return repository.findAllByParkingAndLeaveDateIsAfter(parking, new Date(), PageRequest.of(page, limit));
     }
 
     @Override
@@ -55,7 +58,7 @@ public class VehicleServiceImpl implements VehicleService {
         if(query.isEmpty()){
             return findAllVehiclesByUserEmail(email, page, limit);
         }
-        return repository.findAllByParkingAndReferenceContainingIgnoreCaseAndLeaveDateBefore(parking, query, new Date(), PageRequest.of(page, limit));
+        return repository.findAllByParkingAndReferenceContainingIgnoreCase(parking, query, PageRequest.of(page, limit));
     }
 
     @Override
