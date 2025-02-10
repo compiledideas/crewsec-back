@@ -1,8 +1,6 @@
 package com.compiledideas.crewsecback.parking.controllers;
 
-import com.compiledideas.crewsecback.parking.models.Parking;
 import com.compiledideas.crewsecback.parking.models.Report;
-import com.compiledideas.crewsecback.parking.services.ParkingService;
 import com.compiledideas.crewsecback.parking.services.ReportService;
 import com.compiledideas.crewsecback.security.service.JwtService;
 import com.compiledideas.crewsecback.utils.ResponseHandler;

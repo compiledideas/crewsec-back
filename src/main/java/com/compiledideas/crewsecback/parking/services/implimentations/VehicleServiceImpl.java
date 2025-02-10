@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -52,9 +53,9 @@ public class VehicleServiceImpl implements VehicleService {
         var parking = parkingService.findParkingByUserEmail(email);
 
         if(query.isEmpty()){
-            return repository.findAllByParking(parking, PageRequest.of(page, limit));
+            return findAllVehiclesByUserEmail(email, page, limit);
         }
-        return repository.findAllByParkingAndReferenceContainingIgnoreCase(parking, query, PageRequest.of(page, limit));
+        return repository.findAllByParkingAndReferenceContainingIgnoreCaseAndLeaveDateBefore(parking, query, new Date(), PageRequest.of(page, limit));
     }
 
     @Override
