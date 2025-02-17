@@ -4,6 +4,7 @@ package com.compiledideas.crewsecback.pushnotification.controllers;
 import com.compiledideas.crewsecback.exceptions.NotificationException;
 import com.compiledideas.crewsecback.pushnotification.model.PushNotificationParams;
 import com.compiledideas.crewsecback.pushnotification.repository.PushNotificationParamsRepository;
+import com.compiledideas.crewsecback.pushnotification.services.PushParamService;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,19 +22,25 @@ public class PushNotificationParamsController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> updatePushNotificationToken(@RequestBody PushNotificationParams params) {
-
+        boolean  changed  = false;
         if(params.getAdminId() == null){
             throw new NotificationException("Admin ID is required");
         }
+        PushNotificationParams adminParams = params;
+        var old = repository.findByAdminId(params.getAdminId());
+        if(old.isPresent()){
+            adminParams = old.get();
+            changed = !adminParams.getAdminToken().equals(params.getAdminToken());
+            if(changed){
+                adminParams.setAdminToken(params.getAdminToken());
+            }
+        }
 
-        var old = repository.findByAdminId(params.getAdminId()).orElse(repository.save(params));
-
-        var changed = !old.getAdminToken().equals(params.getAdminToken());
 
         return ResponseHandler.generateResponse(
                 changed ? "Changed Successfully" : "Token just created",
                 HttpStatus.OK,
-                old
+                repository.save(adminParams)
         );
     }
 
