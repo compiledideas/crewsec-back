@@ -1,7 +1,11 @@
 package com.compiledideas.crewsecback.parking.controllers;
 
+import com.compiledideas.crewsecback.exceptions.NotificationException;
 import com.compiledideas.crewsecback.parking.models.Felparkering;
 import com.compiledideas.crewsecback.parking.services.FelparkeringService;
+import com.compiledideas.crewsecback.pushnotification.model.NotificationRequest;
+import com.compiledideas.crewsecback.pushnotification.services.FCMService;
+import com.compiledideas.crewsecback.pushnotification.services.PushParamService;
 import com.compiledideas.crewsecback.security.service.JwtService;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.ExecutionException;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/v1/felparkering")
@@ -19,6 +25,8 @@ public class FelparkeringController {
 
     private final FelparkeringService service;
     private final JwtService jwtService;
+    private final FCMService fcmService;
+    private final PushParamService pushParamService;
 
     @GetMapping("")
     public ResponseEntity<Object> findFelparkerings(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
@@ -36,7 +44,6 @@ public class FelparkeringController {
             @RequestParam(name = "limit",required = false, defaultValue = "12") String limit,
             @PathVariable String parkingId) {
 
-        service.createFelparkering(new Felparkering());
         return ResponseHandler.generateResponse(
           "Getting page of Felparkerings",
           HttpStatus.OK,
@@ -75,11 +82,21 @@ public class FelparkeringController {
     }
     
     @PostMapping("/")
-    public ResponseEntity<Object> createParking(@RequestBody Felparkering Felparkering) {
+    public ResponseEntity<Object> createParking(@RequestBody Felparkering felparkering) {
+        var notification = "Parking " + felparkering.getParking().getName() + " created a new felparkering for car with reference " + felparkering.getReference();
+
+        pushParamService.getAllAdminsParams().forEach(item -> {
+            try {
+                fcmService.sendMessageToToken(new NotificationRequest("New felparkering", notification, "felparkering", item.getAdminToken()));
+            } catch (Exception e) {
+                throw new NotificationException("Can't send notification. " + e.getMessage());
+            }
+        });
+
         return ResponseHandler.generateResponse(
           "Added new Felparkering successfully.",
           HttpStatus.CREATED,
-          service.createFelparkering(Felparkering)
+          service.createFelparkering(felparkering)
         );
     }
     

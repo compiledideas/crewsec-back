@@ -1,7 +1,11 @@
 package com.compiledideas.crewsecback.parking.controllers;
 
+import com.compiledideas.crewsecback.exceptions.NotificationException;
 import com.compiledideas.crewsecback.parking.models.Report;
 import com.compiledideas.crewsecback.parking.services.ReportService;
+import com.compiledideas.crewsecback.pushnotification.model.NotificationRequest;
+import com.compiledideas.crewsecback.pushnotification.services.FCMService;
+import com.compiledideas.crewsecback.pushnotification.services.PushParamService;
 import com.compiledideas.crewsecback.security.service.JwtService;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +23,8 @@ public class ReportController {
 
     private final ReportService service;
     private final JwtService jwtService;
+    private final FCMService fcmService;
+    private final PushParamService pushParamService;
 
     @GetMapping("")
     public ResponseEntity<Object> findReports(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
@@ -62,6 +68,17 @@ public class ReportController {
     
     @PostMapping("/")
     public ResponseEntity<Object> createReport(@RequestBody Report report) {
+
+        var notification = "Parking " + report.getParking().getName() + " created a new report for disturbing for client " + report.getName() + " was disturbed by user " + report.getDisturbingName();
+
+        pushParamService.getAllAdminsParams().forEach(item -> {
+            try {
+                fcmService.sendMessageToToken(new NotificationRequest("New markulera", notification, "markulera", item.getAdminToken()));
+            } catch (Exception e) {
+                throw new NotificationException("Can't send notification. " + e.getMessage());
+            }
+        });
+
         return ResponseHandler.generateResponse(
           "Added new parking successfully.",
           HttpStatus.CREATED,

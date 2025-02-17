@@ -1,6 +1,7 @@
 package com.compiledideas.crewsecback.exceptions.handlers;
 
 
+import com.compiledideas.crewsecback.exceptions.NotificationException;
 import com.compiledideas.crewsecback.exceptions.ResourceNotFoundException;
 import com.compiledideas.crewsecback.exceptions.StorageException;
 import com.compiledideas.crewsecback.exceptions.UserAlreadyExist;
@@ -22,6 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.AccessDeniedException;
+import java.security.SignatureException;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -42,7 +44,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     protected ResponseEntity<Object>  handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        logger.error( " - Status:  " + HttpStatus.UNAUTHORIZED + " - " + ex.getMessage());
+        logger.error( "Status:  " + HttpStatus.UNAUTHORIZED + " - " + ex.getMessage());
         return ResponseHandler.generateResponse(
                 ex.getMessage(),
                 HttpStatus.UNAUTHORIZED,
@@ -92,6 +94,28 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                 "Email or password incorrect: " + ex.getMessage(),
                 HttpStatus.UNAUTHORIZED,
                 "Password is incorrect"
+        );
+    }
+
+    @ExceptionHandler(NotificationException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    protected ResponseEntity<Object>  handleNotificationException(NotificationException ex) {
+        logger.error("Status:  {} - {}", HttpStatus.NO_CONTENT, ex.getMessage());
+        return ResponseHandler.generateResponse(
+                 ex.getMessage(),
+                HttpStatus.NO_CONTENT,
+                "Notification"
+        );
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    protected ResponseEntity<Object>  handleSignatureException(SignatureException ex) {
+        logger.error("Status:  {} - {}", HttpStatus.UNAUTHORIZED, ex.getMessage());
+        return ResponseHandler.generateResponse(
+                 ex.getMessage(),
+                HttpStatus.UNAUTHORIZED,
+                "Token error."
         );
     }
 

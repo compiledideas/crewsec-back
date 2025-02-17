@@ -1,7 +1,11 @@
 package com.compiledideas.crewsecback.parking.controllers;
 
+import com.compiledideas.crewsecback.exceptions.NotificationException;
 import com.compiledideas.crewsecback.parking.models.Markulera;
 import com.compiledideas.crewsecback.parking.services.MarkuleraService;
+import com.compiledideas.crewsecback.pushnotification.model.NotificationRequest;
+import com.compiledideas.crewsecback.pushnotification.services.FCMService;
+import com.compiledideas.crewsecback.pushnotification.services.PushParamService;
 import com.compiledideas.crewsecback.security.service.JwtService;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +23,8 @@ public class MarkuleraController {
 
     private final MarkuleraService service;
     private final JwtService jwtService;
+    private final FCMService fcmService;
+    private final PushParamService pushParamService;
 
     @GetMapping("")
     public ResponseEntity<Object> findMarkuleras(@RequestParam(name = "page") String page, @RequestParam(name = "limit",required = false, defaultValue = "12") String limit) {
@@ -74,6 +80,17 @@ public class MarkuleraController {
 
     @PostMapping("/")
     public ResponseEntity<Object> createParking(@RequestBody Markulera markulera) {
+
+        var notification = "Parking " + markulera.getParking().getName() + " created a new markulera for car with reference " + markulera.getReference();
+
+        pushParamService.getAllAdminsParams().forEach(item -> {
+            try {
+                fcmService.sendMessageToToken(new NotificationRequest("New markulera", notification, "markulera", item.getAdminToken()));
+            } catch (Exception e) {
+                throw new NotificationException("Can't send notification. " + e.getMessage());
+            }
+        });
+
         return ResponseHandler.generateResponse(
           "Added new markulera successfully.",
           HttpStatus.CREATED,
