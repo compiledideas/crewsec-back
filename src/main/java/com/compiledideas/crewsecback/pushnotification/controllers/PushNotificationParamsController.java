@@ -28,8 +28,8 @@ public class PushNotificationParamsController {
     public ResponseEntity<Object> updatePushNotificationToken(@RequestBody PushNotificationParams params, @NonNull HttpServletRequest request) {
         boolean  changed  = false;
         String username = jwtService.extractUsername(request.getHeader("Authorization").substring(7));
-
         PushNotificationParams adminParams = params;
+        adminParams.setUsername(username);
         var old = repository.findByUsername(username);
         if(old.isPresent()){
             adminParams = old.get();
