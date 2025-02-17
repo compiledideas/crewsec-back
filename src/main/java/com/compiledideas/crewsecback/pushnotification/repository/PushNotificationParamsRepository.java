@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface PushNotificationParamsRepository extends JpaRepository<PushNotificationParams, Long> {
 
-    Optional<PushNotificationParams> findAllByAdminId(String adminId);
+    Optional<PushNotificationParams> findByAdminId(String adminId);
 }

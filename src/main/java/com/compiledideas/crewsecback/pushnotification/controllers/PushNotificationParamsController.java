@@ -26,7 +26,7 @@ public class PushNotificationParamsController {
             throw new NotificationException("Admin ID is required");
         }
 
-        var old = repository.findAllByAdminId(params.getAdminId()).orElse(repository.save(params));
+        var old = repository.findByAdminId(params.getAdminId()).orElse(repository.save(params));
 
         var changed = !old.getAdminToken().equals(params.getAdminToken());
 
