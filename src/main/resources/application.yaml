@@ -14,7 +14,5 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
 
-app:
-  firebase-configuration-file: /root/config/crewsec-firebase-admin.json
 server:
   port: 8080

@@ -73,7 +73,7 @@ public class ReportController {
 
         pushParamService.getAllAdminsParams().forEach(item -> {
             try {
-                fcmService.sendMessageToToken(new NotificationRequest("New markulera", notification, "markulera", item.getAdminToken()));
+                fcmService.sendMessageToToken(new NotificationRequest("New markulera", notification, null, item.getAdminToken()));
             } catch (Exception e) {
                 throw new NotificationException("Can't send notification. " + e.getMessage());
             }

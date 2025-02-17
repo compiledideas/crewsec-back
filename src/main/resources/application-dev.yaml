@@ -8,6 +8,9 @@ spring:
 storage:
   location: /Users/blanzin/Desktop/bucket
 
+app:
+  firebase-configuration-file: crewsec-firebase-admin.json
+
 token:
   signing:
     key: phdin9WOVV3EJZdJyVvxeXeG3ieE5IH/WlyQBGC7uGk=

@@ -98,12 +98,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(NotificationException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     protected ResponseEntity<Object>  handleNotificationException(NotificationException ex) {
-        logger.error("Status:  {} - {}", HttpStatus.NO_CONTENT, ex.getMessage());
+        logger.error("Status:  {} - {}", HttpStatus.METHOD_NOT_ALLOWED, ex.getMessage());
         return ResponseHandler.generateResponse(
                  ex.getMessage(),
-                HttpStatus.NO_CONTENT,
+                HttpStatus.METHOD_NOT_ALLOWED,
                 "Notification"
         );
     }

@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.ExecutionException;
 
 @AllArgsConstructor
 @RestController
@@ -87,7 +86,7 @@ public class FelparkeringController {
 
         pushParamService.getAllAdminsParams().forEach(item -> {
             try {
-                fcmService.sendMessageToToken(new NotificationRequest("New felparkering", notification, "felparkering", item.getAdminToken()));
+                fcmService.sendMessageToToken(new NotificationRequest("New felparkering", notification, null, item.getAdminToken()));
             } catch (Exception e) {
                 throw new NotificationException("Can't send notification. " + e.getMessage());
             }

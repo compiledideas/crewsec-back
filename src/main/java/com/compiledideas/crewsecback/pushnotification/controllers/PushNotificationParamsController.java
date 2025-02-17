@@ -1,10 +1,8 @@
 package com.compiledideas.crewsecback.pushnotification.controllers;
 
 
-import com.compiledideas.crewsecback.exceptions.NotificationException;
 import com.compiledideas.crewsecback.pushnotification.model.PushNotificationParams;
 import com.compiledideas.crewsecback.pushnotification.repository.PushNotificationParamsRepository;
-import com.compiledideas.crewsecback.pushnotification.services.PushParamService;
 import com.compiledideas.crewsecback.security.service.JwtService;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
