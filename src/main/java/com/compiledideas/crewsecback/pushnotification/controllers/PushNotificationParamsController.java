@@ -1,6 +1,7 @@
 package com.compiledideas.crewsecback.pushnotification.controllers;
 
 
+import com.compiledideas.crewsecback.exceptions.NotificationException;
 import com.compiledideas.crewsecback.pushnotification.model.PushNotificationParams;
 import com.compiledideas.crewsecback.pushnotification.repository.PushNotificationParamsRepository;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
@@ -20,6 +21,11 @@ public class PushNotificationParamsController {
     @PostMapping("/update")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object> updatePushNotificationToken(@RequestBody PushNotificationParams params) {
+
+        if(params.getAdminId() == null){
+            throw new NotificationException("Admin ID is required");
+        }
+
         var old = repository.findAllByAdminId(params.getAdminId()).orElse(repository.save(params));
 
         var changed = !old.getAdminToken().equals(params.getAdminToken());
@@ -28,6 +34,19 @@ public class PushNotificationParamsController {
                 changed ? "Changed Successfully" : "Token just created",
                 HttpStatus.OK,
                 old
+        );
+    }
+
+
+    @GetMapping("/getAll")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Object> getAllParams() {
+
+
+        return ResponseHandler.generateResponse(
+                "getting all params",
+                HttpStatus.OK,
+                repository.findAll()
         );
     }
 }
