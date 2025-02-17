@@ -20,6 +20,6 @@ public class PushNotificationParams {
             valueColumnName = "seq_value")
     private Long id;
 
-    private String adminId;
+    private String username;
     private String adminToken;
 }
