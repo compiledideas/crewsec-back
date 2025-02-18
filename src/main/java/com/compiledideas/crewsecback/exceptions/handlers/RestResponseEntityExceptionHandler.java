@@ -6,6 +6,7 @@ import com.compiledideas.crewsecback.exceptions.ResourceNotFoundException;
 import com.compiledideas.crewsecback.exceptions.StorageException;
 import com.compiledideas.crewsecback.exceptions.UserAlreadyExist;
 import com.compiledideas.crewsecback.utils.ResponseHandler;
+import io.github.jav.exposerversdk.PushClientException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -105,6 +106,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
                  ex.getMessage(),
                 HttpStatus.METHOD_NOT_ALLOWED,
                 "Notification"
+        );
+    }
+
+    @ExceptionHandler(PushClientException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    protected ResponseEntity<Object>  handlePushClientException(PushClientException ex) {
+        logger.error("Status:  {} - {}", HttpStatus.METHOD_NOT_ALLOWED, ex.getMessage());
+        return ResponseHandler.generateResponse(
+                 ex.getMessage(),
+                HttpStatus.METHOD_NOT_ALLOWED,
+                "Push client exception "
         );
     }
 

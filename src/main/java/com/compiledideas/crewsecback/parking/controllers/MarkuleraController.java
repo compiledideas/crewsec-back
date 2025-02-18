@@ -81,11 +81,11 @@ public class MarkuleraController {
     @PostMapping("/")
     public ResponseEntity<Object> createParking(@RequestBody Markulera markulera) {
 
-        var notification = "Parking " + markulera.getParking().getName() + " created a new markulera for car with reference " + markulera.getReference();
+        var notification = "Parking " + markulera.getParking().getId() + " created a new markulera for car with reference " + markulera.getReference();
 
         pushParamService.getAllAdminsParams().forEach(item -> {
             try {
-                fcmService.sendMessageToToken(new NotificationRequest("New markulera", notification, null, item.getAdminToken()));
+                fcmService.sendPushNotification(new NotificationRequest("New markulera", notification, null, item.getAdminToken()));
             } catch (Exception e) {
                 throw new NotificationException("Can't send notification. " + e.getMessage());
             }

@@ -82,11 +82,11 @@ public class FelparkeringController {
     
     @PostMapping("/")
     public ResponseEntity<Object> createParking(@RequestBody Felparkering felparkering) {
-        var notification = "Parking " + felparkering.getParking().getName() + " created a new felparkering for car with reference " + felparkering.getReference();
+        var notification = "Parking " + felparkering.getParking().getId() + " created a new felparkering for car with reference " + felparkering.getReference();
 
         pushParamService.getAllAdminsParams().forEach(item -> {
             try {
-                fcmService.sendMessageToToken(new NotificationRequest("New felparkering", notification, null, item.getAdminToken()));
+                fcmService.sendPushNotification(new NotificationRequest("New felparkering", notification, null, item.getAdminToken()));
             } catch (Exception e) {
                 throw new NotificationException("Can't send notification. " + e.getMessage());
             }

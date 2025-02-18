@@ -69,11 +69,11 @@ public class ReportController {
     @PostMapping("/")
     public ResponseEntity<Object> createReport(@RequestBody Report report) {
 
-        var notification = "Parking " + report.getParking().getName() + " created a new report for disturbing for client " + report.getName() + " was disturbed by user " + report.getDisturbingName();
+        var notification = "Parking " + report.getParking().getId() + " created a new report for disturbing for client " + report.getName() + " was disturbed by user " + report.getDisturbingName();
 
         pushParamService.getAllAdminsParams().forEach(item -> {
             try {
-                fcmService.sendMessageToToken(new NotificationRequest("New markulera", notification, null, item.getAdminToken()));
+                fcmService.sendPushNotification(new NotificationRequest("New markulera", notification, null, item.getAdminToken()));
             } catch (Exception e) {
                 throw new NotificationException("Can't send notification. " + e.getMessage());
             }
