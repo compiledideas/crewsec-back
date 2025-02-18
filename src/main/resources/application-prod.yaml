@@ -6,8 +6,9 @@ spring:
 
 storage:
   location: /root/bucket
+
 app:
-  firebase-configuration-file: /root/config/crewsec-firebase-admin.json
+  firebase-configuration-file: crewsec-firebase-admin.json
 
 token:
   signing:
